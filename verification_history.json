@@ -1,0 +1,302 @@
+[
+    {
+        "date": "2026-10-22",
+        "time": "07:10:46",
+        "result": "Forged",
+        "similarity": 84.57
+    },
+    {
+        "date": "2026-10-22",
+        "time": "07:19:35",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-22",
+        "time": "07:19:35",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-22",
+        "time": "07:19:43",
+        "result": "Forged",
+        "similarity": 87.71
+    },
+    {
+        "date": "2026-10-22",
+        "time": "07:20:09",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-22",
+        "time": "07:20:09",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-22",
+        "time": "07:20:19",
+        "result": "Forged",
+        "similarity": 86.32
+    },
+    {
+        "date": "2026-10-22",
+        "time": "07:20:19",
+        "result": "Forged",
+        "similarity": 86.32
+    },
+    {
+        "date": "2026-10-22",
+        "time": "07:26:42",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-22",
+        "time": "07:27:24",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-22",
+        "time": "07:30:27",
+        "result": "Forged",
+        "similarity": 81.29
+    },
+    {
+        "date": "2026-10-22",
+        "time": "07:39:43",
+        "result": "Forged",
+        "similarity": 87.06
+    },
+    {
+        "date": "2026-10-22",
+        "time": "07:45:31",
+        "result": "Forged",
+        "similarity": 86.46
+    },
+    {
+        "date": "2026-10-22",
+        "time": "07:45:50",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-22",
+        "time": "07:54:42",
+        "result": "Forged",
+        "similarity": 86.14
+    },
+    {
+        "date": "2026-10-22",
+        "time": "08:26:50",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-22",
+        "time": "08:29:05",
+        "result": "Forged",
+        "similarity": 87.04
+    },
+    {
+        "date": "2026-10-22",
+        "time": "08:31:48",
+        "result": "Forged",
+        "similarity": 87.54
+    },
+    {
+        "date": "2026-10-22",
+        "time": "09:02:12",
+        "result": "Forged",
+        "similarity": 83.34
+    },
+    {
+        "date": "2026-10-22",
+        "time": "09:02:22",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-22",
+        "time": "09:04:53",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-22",
+        "time": "09:08:09",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-22",
+        "time": "09:08:37",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-22",
+        "time": "09:10:52",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-22",
+        "time": "09:16:38",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-22",
+        "time": "09:25:53",
+        "result": "Forged",
+        "similarity": 88.07
+    },
+    {
+        "date": "2026-10-22",
+        "time": "09:27:38",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-22",
+        "time": "09:47:19",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-22",
+        "time": "09:55:56",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-22",
+        "time": "09:56:27",
+        "result": "Forged",
+        "similarity": 84.55
+    },
+    {
+        "date": "2026-10-22",
+        "time": "09:59:08",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-22",
+        "time": "11:52:52",
+        "result": "Forged",
+        "similarity": 13.38
+    },
+    {
+        "date": "2026-10-22",
+        "time": "11:53:17",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-22",
+        "time": "16:33:33",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-22",
+        "time": "17:36:25",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-22",
+        "time": "17:36:58",
+        "result": "Forged",
+        "similarity": 84.27
+    },
+    {
+        "date": "2026-10-23",
+        "time": "01:25:58",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-23",
+        "time": "09:11:12",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-23",
+        "time": "09:11:37",
+        "result": "Forged",
+        "similarity": 81.95
+    },
+    {
+        "date": "2026-10-23",
+        "time": "09:19:15",
+        "result": "Forged",
+        "similarity": 86.53
+    },
+    {
+        "date": "2026-10-23",
+        "time": "21:06:46",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-23",
+        "time": "21:07:11",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-23",
+        "time": "21:07:33",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-23",
+        "time": "21:07:45",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-23",
+        "time": "21:08:08",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-23",
+        "time": "21:11:14",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-23",
+        "time": "21:17:16",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-23",
+        "time": "21:32:55",
+        "result": "Forged",
+        "similarity": 83.61
+    },
+    {
+        "date": "2026-10-23",
+        "time": "21:36:20",
+        "result": "Genuine",
+        "similarity": 100
+    },
+    {
+        "date": "2026-10-23",
+        "time": "21:36:37",
+        "result": "Forged",
+        "similarity": 82.68
+    }
+]

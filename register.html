@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Register - SignVerify</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+
+<body>
+
+<main class="auth">
+
+
+    <!-- ================= LEFT PANEL ================= -->
+
+    <aside class="auth-art">
+
+        <a class="auth-brand" href="index.html">✍️ SignVerify</a>
+
+        <div>
+
+            <h2>Add your genuine signatures once. Check any signature after.</h2>
+
+            <p class="auth-lead">
+                Upload 3 to 5 clear samples. SignVerify compares every new
+                signature with them and tells you if it is genuine or forged.
+            </p>
+
+            <div class="auth-sign" aria-hidden="true">
+
+                <div class="auth-stamp">Genuine</div>
+
+                <svg viewBox="0 0 320 110" xmlns="http://www.w3.org/2000/svg">
+                    <path class="auth-sign-ref"
+                          d="M14 80 C 30 20, 54 18, 50 60 C 47 96, 32 100, 62 70 C 82 50, 94 44, 92 66 C 90 84, 102 84, 114 62 C 122 48, 130 48, 128 62 C 126 76, 142 78, 158 56 C 168 42, 178 44, 174 62 C 172 74, 190 74, 212 50 L 216 46 C 232 30, 264 36, 252 62 C 246 76, 228 82, 302 86" />
+                    <path class="auth-sign-new" pathLength="1"
+                          d="M16 78 C 33 22, 55 20, 52 61 C 49 94, 34 99, 63 72 C 83 52, 95 46, 93 67 C 91 83, 103 83, 115 64 C 123 50, 131 49, 129 63 C 127 75, 143 77, 159 57 C 169 44, 179 45, 175 63 C 173 73, 191 73, 213 51 L 217 47 C 233 32, 265 37, 253 63 C 247 75, 229 81, 300 84" />
+                </svg>
+
+                <div class="auth-sign-foot">
+                    <span>Similarity to registered sample</span>
+                    <strong>94%</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+        <ul class="auth-points">
+            <li>Free to create, ready in a minute</li>
+            <li>Use clear images on a plain background</li>
+            <li>Your samples are used only for comparison</li>
+        </ul>
+
+    </aside>
+
+
+    <!-- ================= REGISTER FORM ================= -->
+
+    <section class="auth-form-side">
+
+        <a class="auth-back" href="index.html">← Back to home</a>
+
+        <div class="auth-card">
+
+            <h1>Create your account</h1>
+
+            <p class="auth-sub">
+                Set up your account and add your genuine signature samples.
+            </p>
+
+
+            <form onsubmit="registerUser(event)">
+
+
+                <!-- FULL NAME -->
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Full name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        class="form-control"
+                        placeholder="Enter your full name"
+                        required>
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="register-email">
+                        Email address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="register-email"
+                        class="form-control"
+                        placeholder="Enter your email"
+                        required>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <label for="register-password">
+                        Password
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="register-password"
+                            class="form-control"
+                            placeholder="Create a password"
+                            required>
+
+                        <button
+                            type="button"
+                            class="show-password"
+                            onclick="toggleRegisterPassword('register-password', this)">
+
+                            Show
+
+                        </button>
+
+                    </div>
+
+                    <div class="strength"><i id="strength-bar"></i></div>
+                    <div class="strength-text" id="strength-text"></div>
+
+                </div>
+
+
+                <!-- CONFIRM PASSWORD -->
+
+                <div class="form-group">
+
+                    <label for="confirm-password">
+                        Confirm password
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="confirm-password"
+                            class="form-control"
+                            placeholder="Confirm your password"
+                            required>
+
+                        <button
+                            type="button"
+                            class="show-password"
+                            onclick="toggleRegisterPassword('confirm-password', this)">
+
+                            Show
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SIGNATURE SAMPLES -->
+
+                <div class="form-group">
+
+                    <label for="signature-files">
+                        Genuine signature samples
+                    </label>
+
+                    <p class="upload-hint">
+                        Upload 3 to 5 clear images of your handwritten signature.
+                    </p>
+
+                    <label class="drop"
+                           id="drop-zone"
+                           for="signature-files">
+
+                        <span class="drop-icon">✍️</span>
+
+                        <strong>Choose signature images</strong>
+
+                        <span>or drag them here (PNG or JPG)</span>
+
+                    </label>
+
+                    <input
+                        type="file"
+                        id="signature-files"
+                        accept="image/*"
+                        multiple
+                        hidden>
+
+                    <div id="file-name"
+                         class="file-name">
+
+                        No files selected
+
+                    </div>
+
+                </div>
+
+
+                <!-- TERMS -->
+
+                <div class="terms-check">
+
+                    <input
+                        type="checkbox"
+                        id="terms"
+                        required>
+
+                    <label for="terms">
+
+                        I agree to the terms and conditions.
+
+                    </label>
+
+                </div>
+
+
+                <!-- REGISTER BUTTON -->
+
+                <button
+                    type="submit"
+                    class="btn btn-solid btn-block">
+
+                    Create account
+
+                </button>
+
+
+            </form>
+
+
+            <div class="auth-switch">
+
+                Already have an account?
+
+                <a href="login.html">
+                    Log in here
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+// =====================================
+// REGISTER USER
+// =====================================
+
+async function registerUser(event) {
+
+    event.preventDefault();
+
+    const name =
+        document.getElementById("name").value.trim();
+
+    const email =
+        document.getElementById("register-email").value.trim();
+
+    const password =
+        document.getElementById("register-password").value;
+
+    const confirmPassword =
+        document.getElementById("confirm-password").value;
+
+    // =====================================
+    // PASSWORD VALIDATION
+    // =====================================
+
+    if (password !== confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+    }
+
+    if (password.length < 6) {
+        alert("Password must contain at least 6 characters.");
+        return;
+    }
+
+    // =====================================
+    // GET SIGNATURE FILES
+    // =====================================
+
+    const fileInput =
+        document.getElementById("signature-files");
+
+    const files = fileInput.files;
+
+    if (files.length < 3 || files.length > 5) {
+
+        alert(
+            "Please select 3 to 5 genuine signature samples."
+        );
+
+        return;
+    }
+
+    // =====================================
+    // CREATE FORM DATA
+    // =====================================
+
+    const formData = new FormData();
+
+    formData.append("name", name);
+    formData.append("email", email);
+
+    for (let i = 0; i < files.length; i++) {
+
+        formData.append(
+            "signatures",
+            files[i]
+        );
+    }
+
+    // =====================================
+    // CONNECT TO FLASK
+    // =====================================
+
+    try {
+
+        console.log("Connecting to Flask server...");
+
+        const response = await fetch(
+            "http://127.0.0.1:5000/register",
+            {
+                method: "POST",
+                body: formData
+            }
+        );
+
+        console.log(
+            "Flask response status:",
+            response.status
+        );
+
+        // =====================================
+        // READ RESPONSE SAFELY
+        // =====================================
+
+        const responseText =
+            await response.text();
+
+        console.log(
+            "Flask response:",
+            responseText
+        );
+
+        let data = {};
+
+        try {
+
+            data = JSON.parse(responseText);
+
+        } catch (jsonError) {
+
+            console.error(
+                "Server did not return JSON:",
+                responseText
+            );
+
+            alert(
+                "Python server returned an unexpected response.\n\n" +
+                "Please check the app.py terminal."
+            );
+
+            return;
+        }
+
+        // =====================================
+        // SERVER ERROR
+        // =====================================
+
+        if (!response.ok) {
+
+            alert(
+                data.error ||
+                data.message ||
+                "Registration failed!"
+            );
+
+            return;
+        }
+
+        // =====================================
+        // REGISTRATION SUCCESS
+        // =====================================
+
+        const user = {
+
+            name: name,
+
+            email: email,
+
+            password: password,
+
+            signatureSamples: files.length
+
+        };
+
+        localStorage.setItem(
+            "registeredUser",
+            JSON.stringify(user)
+        );
+
+        alert(
+            "Account created successfully! Please login."
+        );
+
+        window.location.href =
+            "login.html";
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "REGISTER CONNECTION ERROR:",
+            error
+        );
+
+        alert(
+            "Unable to connect to Flask server.\n\n" +
+            "Make sure app.py is running on:\n" +
+            "http://127.0.0.1:5000"
+        );
+    }
+}
+
+
+// =====================================
+// PASSWORD SHOW / HIDE
+// =====================================
+
+function toggleRegisterPassword(
+    fieldId,
+    button
+) {
+
+    const passwordField =
+        document.getElementById(fieldId);
+
+    if (passwordField.type === "password") {
+
+        passwordField.type = "text";
+
+        button.textContent = "Hide";
+
+    } else {
+
+        passwordField.type = "password";
+
+        button.textContent = "Show";
+    }
+}
+
+
+// =====================================
+// DISPLAY SELECTED FILES
+// =====================================
+
+document
+    .getElementById("signature-files")
+    .addEventListener(
+        "change",
+        function () {
+
+            const files = this.files;
+
+            const fileName =
+                document.getElementById("file-name");
+
+            if (files.length === 0) {
+
+                fileName.textContent =
+                    "No files selected";
+
+                return;
+            }
+
+            let names = [];
+
+            for (
+                let i = 0;
+                i < files.length;
+                i++
+            ) {
+
+                names.push(files[i].name);
+            }
+
+            fileName.textContent =
+                files.length +
+                " file(s) selected: " +
+                names.join(", ");
+        }
+    );
+
+
+// =====================================
+// PASSWORD STRENGTH METER
+// =====================================
+
+document
+    .getElementById("register-password")
+    .addEventListener("input", function () {
+
+        const value = this.value;
+        const bar = document.getElementById("strength-bar");
+        const text = document.getElementById("strength-text");
+
+        if (!value) {
+            bar.style.width = "0";
+            text.textContent = "";
+            return;
+        }
+
+        let score = 0;
+
+        if (value.length >= 6) score++;
+        if (value.length >= 10) score++;
+        if (/[a-z]/.test(value) && /[A-Z]/.test(value) && /\d/.test(value)) score++;
+        if (/[^A-Za-z0-9]/.test(value)) score++;
+
+        const levels = [
+            { label: "Too short. Use at least 6 characters.", color: "#d6336c" },
+            { label: "Weak", color: "#d6336c" },
+            { label: "Okay", color: "#e8a317" },
+            { label: "Good", color: "#3b4cca" },
+            { label: "Strong", color: "#0f9d6b" }
+        ];
+
+        const level = value.length < 6 ? 0 : Math.max(score, 1);
+
+        bar.style.width = (level / 4 * 100) + "%";
+        bar.style.background = levels[level].color;
+        text.textContent = levels[level].label;
+
+    });
+
+
+// =====================================
+// DRAG AND DROP FOR SIGNATURE FILES
+// =====================================
+
+(function () {
+
+    const zone = document.getElementById("drop-zone");
+    const input = document.getElementById("signature-files");
+
+    ["dragenter", "dragover"].forEach(function (name) {
+        zone.addEventListener(name, function (e) {
+            e.preventDefault();
+            zone.classList.add("is-drag");
+        });
+    });
+
+    ["dragleave", "drop"].forEach(function (name) {
+        zone.addEventListener(name, function (e) {
+            e.preventDefault();
+            zone.classList.remove("is-drag");
+        });
+    });
+
+    zone.addEventListener("drop", function (e) {
+
+        const dropped = Array.from(e.dataTransfer.files).filter(function (file) {
+            return file.type.indexOf("image/") === 0;
+        });
+
+        if (dropped.length === 0) return;
+
+        const transfer = new DataTransfer();
+
+        dropped.forEach(function (file) {
+            transfer.items.add(file);
+        });
+
+        input.files = transfer.files;
+        input.dispatchEvent(new Event("change"));
+
+    });
+
+})();
+
+</script>
+
+
+</body>
+
+</html>

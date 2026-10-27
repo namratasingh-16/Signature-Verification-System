@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard - SignVerify</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+
+        :root {
+            --ink: #14183a;
+            --ink-soft: #4a5078;
+            --paper: #f3f5fb;
+            --card: #ffffff;
+            --line: #d9deef;
+            --lavender: #e4e8ff;
+            --cobalt: #3b4cca;
+            --genuine: #0f9d6b;
+            --genuine-bg: #e3f6ee;
+            --forged: #d6336c;
+            --forged-bg: #fde8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Figtree", system-ui, sans-serif;
+            background: var(--paper);
+            color: var(--ink);
+            line-height: 1.6;
+        }
+
+        h1, h2 {
+            font-family: "Bricolage Grotesque", "Figtree", sans-serif;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        button:focus-visible,
+        a:focus-visible {
+            outline: 3px solid var(--cobalt);
+            outline-offset: 3px;
+        }
+
+        .wrap {
+            width: min(1100px, 92%);
+            margin: 0 auto;
+        }
+
+        /* ---------- Top bar ---------- */
+
+        .topbar {
+            background: var(--ink);
+            color: #fff;
+            padding: 16px 0;
+        }
+
+        .topbar .wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .brand {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-weight: 800;
+            font-size: 1.35rem;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .welcome-text {
+            color: #c4caf0;
+            font-size: 0.95rem;
+        }
+
+        .welcome-text strong {
+            color: #fff;
+        }
+
+        .btn {
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-radius: 999px;
+            padding: 0.7rem 1.5rem;
+            border: 2px solid var(--ink);
+            cursor: pointer;
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+
+        .btn-solid {
+            background: var(--ink);
+            color: #fff;
+        }
+
+        .btn-solid:hover {
+            background: var(--cobalt);
+            border-color: var(--cobalt);
+            transform: translateY(-2px);
+        }
+
+        .logout-button {
+            background: transparent;
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.45);
+            padding: 0.4rem 1.1rem;
+            font-size: 0.9rem;
+        }
+
+        .logout-button:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: #fff;
+        }
+
+        /* ---------- Intro ---------- */
+
+        .intro {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 20px;
+            padding: 48px 0 28px;
+        }
+
+        .intro h1 {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 800;
+        }
+
+        .intro p {
+            color: var(--ink-soft);
+            margin-top: 8px;
+            max-width: 34em;
+        }
+
+        /* ---------- Numbers strip ---------- */
+
+        .ledger {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            overflow: hidden;
+        }
+
+        .ledger-item {
+            padding: 28px 32px;
+        }
+
+        .ledger-item + .ledger-item {
+            border-left: 1px solid var(--line);
+        }
+
+        .ledger-num {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-weight: 800;
+            font-size: 3.2rem;
+            line-height: 1;
+        }
+
+        .ledger-item p {
+            color: var(--ink-soft);
+            margin-top: 8px;
+        }
+
+        .ledger-item.genuine .ledger-num { color: var(--genuine); }
+        .ledger-item.forged .ledger-num { color: var(--forged); }
+
+        /* ---------- Panels ---------- */
+
+        .panel {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: 30px;
+            margin-top: 22px;
+        }
+
+        .panel h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .panel-sub {
+            color: var(--ink-soft);
+            margin-top: 4px;
+        }
+
+        /* Genuine vs forged split bar */
+
+        .split {
+            display: flex;
+            height: 18px;
+            border-radius: 10px;
+            background: var(--lavender);
+            overflow: hidden;
+            margin: 20px 0 14px;
+        }
+
+        .split div {
+            height: 100%;
+            width: 0;
+            transition: width 0.7s ease;
+        }
+
+        .split-genuine { background: var(--genuine); }
+        .split-forged { background: var(--forged); }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            font-weight: 500;
+        }
+
+        .dot {
+            display: inline-block;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .legend span.muted {
+            color: var(--ink-soft);
+            font-weight: 400;
+        }
+
+        /* History table */
+
+        .table-scroll {
+            overflow-x: auto;
+            margin-top: 18px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 520px;
+        }
+
+        th {
+            text-align: left;
+            font-weight: 600;
+            color: var(--ink-soft);
+            font-size: 0.9rem;
+            padding: 12px 14px;
+            border-bottom: 2px solid var(--ink);
+        }
+
+        td {
+            padding: 15px 14px;
+            border-bottom: 1px solid var(--line);
+            vertical-align: middle;
+        }
+
+        tbody tr:hover {
+            background: var(--paper);
+        }
+
+        .stamp {
+            display: inline-block;
+            padding: 2px 12px;
+            border: 2px solid;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.88rem;
+        }
+
+        .genuine-text {
+            color: var(--genuine);
+            background: var(--genuine-bg);
+        }
+
+        .forged-text {
+            color: var(--forged);
+            background: var(--forged-bg);
+        }
+
+        .sim {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+        }
+
+        .mini {
+            width: 90px;
+            height: 7px;
+            border-radius: 5px;
+            background: var(--lavender);
+            overflow: hidden;
+        }
+
+        .mini i {
+            display: block;
+            height: 100%;
+            background: var(--cobalt);
+        }
+
+        .empty-cell {
+            text-align: center;
+            color: var(--ink-soft);
+            padding: 34px 14px;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--ink-soft);
+            font-size: 0.92rem;
+            padding: 40px 0;
+        }
+
+        /* ---------- Mobile ---------- */
+
+        @media (max-width: 700px) {
+
+            .topbar .wrap {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .user-area {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .intro {
+                flex-direction: column;
+                align-items: flex-start;
+                padding-top: 34px;
+            }
+
+            .ledger {
+                grid-template-columns: 1fr;
+            }
+
+            .ledger-item + .ledger-item {
+                border-left: none;
+                border-top: 1px solid var(--line);
+            }
+
+            .panel {
+                padding: 22px;
+            }
+
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .split div, .btn { transition: none; }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- TOP BAR -->
+
+<header class="topbar">
+
+    <div class="wrap">
+
+        <a class="brand" href="dashboard.html">✍️ SignVerify</a>
+
+        <div class="user-area">
+
+            <div class="welcome-text">
+
+                Welcome,
+                <strong id="userName">User</strong>
+
+            </div>
+
+            <button
+                class="btn logout-button"
+                onclick="logoutUser()">
+
+                Logout
+
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main class="wrap">
+
+
+    <!-- INTRO -->
+
+    <div class="intro">
+
+        <div>
+
+            <h1>Your verification dashboard</h1>
+
+            <p>
+                Every signature you check is saved here with its result
+                and similarity score.
+            </p>
+
+        </div>
+
+        <button
+            class="btn btn-solid"
+            onclick="goToVerify()">
+
+            Verify new signature
+
+        </button>
+
+    </div>
+
+
+    <!-- NUMBERS -->
+
+    <section class="ledger">
+
+        <div class="ledger-item">
+            <div class="ledger-num" id="totalCount">0</div>
+            <p>Total verifications</p>
+        </div>
+
+        <div class="ledger-item genuine">
+            <div class="ledger-num" id="genuineCount">0</div>
+            <p>Genuine signatures</p>
+        </div>
+
+        <div class="ledger-item forged">
+            <div class="ledger-num" id="forgedCount">0</div>
+            <p>Forged signatures</p>
+        </div>
+
+    </section>
+
+
+    <!-- OVERVIEW -->
+
+    <section class="panel">
+
+        <h2>Genuine vs forged</h2>
+
+        <p class="panel-sub" id="overviewNote">
+            Share of all your verifications.
+        </p>
+
+        <div class="split">
+            <div class="split-genuine" id="genuineBar"></div>
+            <div class="split-forged" id="forgedBar"></div>
+        </div>
+
+        <div class="legend">
+
+            <span>
+                <i class="dot" style="background: var(--genuine)"></i>
+                <strong id="genuineBarNumber">0</strong> genuine
+                <span class="muted" id="genuinePct">(0%)</span>
+            </span>
+
+            <span>
+                <i class="dot" style="background: var(--forged)"></i>
+                <strong id="forgedBarNumber">0</strong> forged
+                <span class="muted" id="forgedPct">(0%)</span>
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- HISTORY -->
+
+    <section class="panel">
+
+        <h2>Verification history</h2>
+
+        <p class="panel-sub">Newest checks first.</p>
+
+        <div class="table-scroll">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Result</th>
+                        <th>Similarity</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="historyTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<footer>
+    © 2026 SignVerify - Signature Verification System
+</footer>
+
+
+<script>
+
+
+// ========================================
+// LOGIN CHECK
+// ========================================
+
+const isLoggedIn =
+    localStorage.getItem("isLoggedIn");
+
+if (isLoggedIn !== "true") {
+
+    window.location.href = "login.html";
+
+}
+
+
+// ========================================
+// SHOW USER NAME
+// ========================================
+
+let currentUser = {};
+
+try {
+    currentUser =
+        JSON.parse(
+            localStorage.getItem("currentUser") || "{}"
+        );
+} catch (error) {
+    currentUser = {};
+}
+
+
+const userNameElement =
+    document.getElementById("userName");
+
+
+if (userNameElement) {
+
+    userNameElement.textContent =
+        currentUser.name ||
+        currentUser.username ||
+        "User";
+
+}
+
+
+// ========================================
+// LOGOUT
+// ========================================
+
+function logoutUser() {
+
+    localStorage.removeItem("isLoggedIn");
+
+    localStorage.removeItem("currentUser");
+
+    localStorage.removeItem("verificationResult");
+
+    window.location.href = "login.html";
+
+}
+
+
+// ========================================
+// GO TO VERIFY
+// ========================================
+
+function goToVerify() {
+
+    window.location.href = "verify.html";
+
+}
+
+
+// ========================================
+// SAFE TEXT FOR HTML
+// ========================================
+
+function esc(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+
+}
+
+
+// ========================================
+// LOAD HISTORY FROM FLASK
+// ========================================
+
+async function loadHistory() {
+
+    try {
+
+        console.log("Connecting to Flask...");
+
+        const response =
+            await fetch(
+                "http://127.0.0.1:5000/history"
+            );
+
+        console.log("Flask response:", response.status);
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Server error: " + response.status
+            );
+
+        }
+
+        const history =
+            await response.json();
+
+        console.log("History received:", history);
+
+        if (!Array.isArray(history)) {
+
+            throw new Error("Invalid history data");
+
+        }
+
+
+        // ====================================
+        // CALCULATE COUNTS
+        // ====================================
+
+        const total = history.length;
+
+        const genuine =
+            history.filter(
+                item =>
+                    String(item.result)
+                    .toLowerCase()
+                    .trim() === "genuine"
+            ).length;
+
+        const forged =
+            history.filter(
+                item =>
+                    String(item.result)
+                    .toLowerCase()
+                    .trim() === "forged"
+            ).length;
+
+        console.log("Total:", total);
+        console.log("Genuine:", genuine);
+        console.log("Forged:", forged);
+
+
+        // ====================================
+        // UPDATE STATISTICS
+        // ====================================
+
+        document.getElementById("totalCount").textContent = total;
+        document.getElementById("genuineCount").textContent = genuine;
+        document.getElementById("forgedCount").textContent = forged;
+
+        document.getElementById("genuineBarNumber").textContent = genuine;
+        document.getElementById("forgedBarNumber").textContent = forged;
+
+
+        // ====================================
+        // UPDATE SPLIT BAR
+        // ====================================
+
+        const genuinePct =
+            total > 0 ? Math.round(genuine / total * 100) : 0;
+
+        const forgedPct =
+            total > 0 ? Math.round(forged / total * 100) : 0;
+
+        document.getElementById("genuineBar").style.width =
+            (total > 0 ? genuine / total * 100 : 0) + "%";
+
+        document.getElementById("forgedBar").style.width =
+            (total > 0 ? forged / total * 100 : 0) + "%";
+
+        document.getElementById("genuinePct").textContent =
+            "(" + genuinePct + "%)";
+
+        document.getElementById("forgedPct").textContent =
+            "(" + forgedPct + "%)";
+
+        if (total === 0) {
+
+            document.getElementById("overviewNote").textContent =
+                "No verifications yet. Verify a signature to see the split here.";
+
+        }
+
+
+        // ====================================
+        // UPDATE HISTORY TABLE
+        // ====================================
+
+        const historyTable =
+            document.getElementById("historyTable");
+
+        historyTable.innerHTML = "";
+
+        if (history.length === 0) {
+
+            historyTable.innerHTML = `
+                <tr>
+                    <td colspan="4" class="empty-cell">
+                        No verification history yet.
+                        Use "Verify new signature" to run your first check.
+                    </td>
+                </tr>
+            `;
+
+            return;
+
+        }
+
+
+        // ====================================
+        // ADD HISTORY ROWS (newest first)
+        // ====================================
+
+        history
+            .slice()
+            .reverse()
+            .forEach(item => {
+
+                const row = document.createElement("tr");
+
+                const result =
+                    String(item.result || "Unknown");
+
+                const hasSimilarity =
+                    item.similarity !== undefined &&
+                    item.similarity !== null &&
+                    !isNaN(Number(item.similarity));
+
+                const similarityNumber =
+                    hasSimilarity ? Number(item.similarity) : 0;
+
+                const similarityText =
+                    hasSimilarity
+                        ? similarityNumber.toFixed(2) + "%"
+                        : "N/A";
+
+                const barWidth =
+                    Math.max(0, Math.min(100, similarityNumber));
+
+                let timestamp =
+                    item.timestamp ||
+                    item.date ||
+                    "N/A";
+
+                let date = timestamp;
+                let time = "";
+
+                // Split timestamp if available
+
+                if (
+                    typeof timestamp === "string" &&
+                    timestamp.includes(" ")
+                ) {
+
+                    const parts = timestamp.split(" ");
+
+                    date = parts[0];
+                    time = parts.slice(1).join(" ");
+
+                }
+
+                const resultClass =
+                    result.toLowerCase().trim() === "genuine"
+                        ? "genuine-text"
+                        : "forged-text";
+
+                row.innerHTML = `
+
+                    <td>${esc(date)}</td>
+
+                    <td>${esc(time)}</td>
+
+                    <td>
+                        <span class="stamp ${resultClass}">
+                            ${esc(result)}
+                        </span>
+                    </td>
+
+                    <td>
+                        <div class="sim">
+                            <span>${esc(similarityText)}</span>
+                            <span class="mini">
+                                <i style="width: ${barWidth}%"></i>
+                            </span>
+                        </div>
+                    </td>
+
+                `;
+
+                historyTable.appendChild(row);
+
+            });
+
+    }
+
+    catch (error) {
+
+        console.error("Dashboard error:", error);
+
+        document.getElementById("historyTable").innerHTML = `
+
+            <tr>
+                <td colspan="4" class="empty-cell">
+                    Unable to load verification history.
+                    Please make sure app.py is running.
+                </td>
+            </tr>
+
+        `;
+
+    }
+
+}
+
+
+// ========================================
+// START
+// ========================================
+
+loadHistory();
+
+
+</script>
+
+
+</body>
+
+</html>

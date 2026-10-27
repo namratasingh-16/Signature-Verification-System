@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Verify Signature - SignVerify</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= TOP BAR ================= -->
+
+    <header class="topbar">
+
+        <div class="topbar-in">
+
+            <a class="topbar-brand" href="dashboard.html">✍️ SignVerify</a>
+
+            <nav class="top-links">
+
+                <a href="dashboard.html">Dashboard</a>
+
+                <a href="login.html"
+                   class="top-logout"
+                   onclick="logoutUser(event)">Logout</a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= MAIN VERIFY SECTION ================= -->
+
+    <main class="page">
+
+
+        <!-- PAGE HEADING -->
+
+        <div class="page-head">
+
+            <h1>Verify a signature</h1>
+
+            <p>
+                Upload an image of the signature or draw it on the pad.
+                We compare it with your genuine samples.
+            </p>
+
+        </div>
+
+
+        <div class="verify-grid">
+
+
+            <!-- ================= UPLOAD SIGNATURE ================= -->
+
+            <div class="verify-card">
+
+                <div class="verify-card-icon">↑</div>
+
+                <h3>Upload a signature</h3>
+
+                <p>
+                    Use a clear image of the signature you want to check.
+                </p>
+
+
+                <!-- UPLOAD AREA -->
+
+                <label
+                    for="verify-file"
+                    id="verify-drop"
+                    class="verify-upload-area">
+
+                    <div class="upload-symbol">↑</div>
+
+                    <strong>Click to upload</strong>
+
+                    <span>or drag an image here (PNG, JPG or JPEG)</span>
+
+                </label>
+
+
+                <!-- FILE INPUT -->
+
+                <input
+                    type="file"
+                    id="verify-file"
+                    accept="image/png,image/jpeg,image/jpg"
+                    hidden>
+
+
+                <!-- IMAGE PREVIEW -->
+
+                <div
+                    id="image-preview-container"
+                    class="image-preview-container">
+
+                    <img
+                        id="image-preview"
+                        src=""
+                        alt="Signature preview">
+
+                </div>
+
+
+                <!-- FILE NAME -->
+
+                <p
+                    id="selected-file-name"
+                    class="selected-file-name">
+
+                    No file selected
+
+                </p>
+
+            </div>
+
+
+
+            <div class="or-divider" aria-hidden="true">or</div>
+
+
+
+            <!-- ================= DRAW SIGNATURE ================= -->
+
+            <div class="verify-card">
+
+                <div class="verify-card-icon">✎</div>
+
+                <h3>Draw a signature</h3>
+
+                <p>
+                    Sign with your mouse or finger on the line below.
+                </p>
+
+
+                <!-- SIGNATURE CANVAS -->
+
+                <div class="canvas-container" id="canvas-box">
+
+                    <canvas
+                        id="signature-pad">
+                    </canvas>
+
+                    <span class="canvas-x" aria-hidden="true">×</span>
+
+                    <span class="canvas-text">
+                        Sign here
+                    </span>
+
+                </div>
+
+
+                <!-- CLEAR BUTTON -->
+
+                <button
+                    type="button"
+                    id="clear-signature"
+                    class="clear-btn">
+
+                    Clear signature
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= VERIFY BUTTON ================= -->
+
+        <div class="verify-action">
+
+            <button
+                type="button"
+                id="verify-button"
+                class="main-verify-btn"
+                onclick="verifySignature()">
+
+                Verify Signature →
+
+            </button>
+
+        </div>
+
+        <p class="verify-note">
+            If you add both, the uploaded image is the one that gets checked.
+        </p>
+
+
+        <!-- ================= MESSAGE ================= -->
+
+        <p
+            id="verify-message"
+            class="verify-message">
+        </p>
+
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="site-footer">
+        © 2026 SignVerify - AI-Based Signature Verification System
+    </footer>
+
+
+
+    <!-- ================= SIGNATURE PAD LIBRARY ================= -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/signature_pad@5.1.2/dist/signature_pad.umd.min.js">
+    </script>
+
+
+    <!-- ================= YOUR JAVASCRIPT ================= -->
+
+    <script src="js/script.js"></script>
+
+
+    <!-- ================= PAGE EXTRAS ================= -->
+
+    <script>
+
+        // Logout: clear saved login, then go to login page
+
+        function logoutUser(event) {
+
+            if (event) event.preventDefault();
+
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("currentUser");
+            localStorage.removeItem("verificationResult");
+
+            window.location.href = "login.html";
+
+        }
+
+
+        // Drag and drop an image onto the upload area
+
+        (function () {
+
+            const zone = document.getElementById("verify-drop");
+            const input = document.getElementById("verify-file");
+
+            if (!zone || !input) return;
+
+            ["dragenter", "dragover"].forEach(function (name) {
+                zone.addEventListener(name, function (e) {
+                    e.preventDefault();
+                    zone.classList.add("is-drag");
+                });
+            });
+
+            ["dragleave", "drop"].forEach(function (name) {
+                zone.addEventListener(name, function (e) {
+                    e.preventDefault();
+                    zone.classList.remove("is-drag");
+                });
+            });
+
+            zone.addEventListener("drop", function (e) {
+
+                const files = Array.from(e.dataTransfer.files).filter(function (file) {
+                    return file.type === "image/png" ||
+                           file.type === "image/jpeg";
+                });
+
+                if (files.length === 0) return;
+
+                const transfer = new DataTransfer();
+                transfer.items.add(files[0]);
+
+                input.files = transfer.files;
+                input.dispatchEvent(new Event("change"));
+
+            });
+
+        })();
+
+
+        // Hide the "Sign here" hint once drawing starts
+
+        (function () {
+
+            const canvas = document.getElementById("signature-pad");
+            const box = document.getElementById("canvas-box");
+            const clearButton = document.getElementById("clear-signature");
+
+            if (!canvas || !box) return;
+
+            canvas.addEventListener("pointerdown", function () {
+                box.classList.add("signed");
+            });
+
+            if (clearButton) {
+                clearButton.addEventListener("click", function () {
+                    box.classList.remove("signed");
+                });
+            }
+
+        })();
+
+    </script>
+
+
+</body>
+
+</html>

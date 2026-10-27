@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Login - SignVerify</title>
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+
+<body>
+
+<main class="auth">
+
+
+    <!-- ================= LEFT PANEL ================= -->
+
+    <aside class="auth-art">
+
+        <a class="auth-brand" href="index.html">✍️ SignVerify</a>
+
+        <div>
+
+            <h2>Every signature, checked against the originals.</h2>
+
+            <p class="auth-lead">
+                Log in to run new checks and see how each one scored.
+            </p>
+
+            <div class="auth-sign" aria-hidden="true">
+
+                <div class="auth-stamp">Genuine</div>
+
+                <svg viewBox="0 0 320 110" xmlns="http://www.w3.org/2000/svg">
+                    <path class="auth-sign-ref"
+                          d="M14 80 C 30 20, 54 18, 50 60 C 47 96, 32 100, 62 70 C 82 50, 94 44, 92 66 C 90 84, 102 84, 114 62 C 122 48, 130 48, 128 62 C 126 76, 142 78, 158 56 C 168 42, 178 44, 174 62 C 172 74, 190 74, 212 50 L 216 46 C 232 30, 264 36, 252 62 C 246 76, 228 82, 302 86" />
+                    <path class="auth-sign-new" pathLength="1"
+                          d="M16 78 C 33 22, 55 20, 52 61 C 49 94, 34 99, 63 72 C 83 52, 95 46, 93 67 C 91 83, 103 83, 115 64 C 123 50, 131 49, 129 63 C 127 75, 143 77, 159 57 C 169 44, 179 45, 175 63 C 173 73, 191 73, 213 51 L 217 47 C 233 32, 265 37, 253 63 C 247 75, 229 81, 300 84" />
+                </svg>
+
+                <div class="auth-sign-foot">
+                    <span>Similarity to registered sample</span>
+                    <strong>94%</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+        <ul class="auth-points">
+            <li>Upload or draw the signature</li>
+            <li>See a score for every genuine sample</li>
+            <li>Keep a history of past checks</li>
+        </ul>
+
+    </aside>
+
+
+    <!-- ================= LOGIN FORM ================= -->
+
+    <section class="auth-form-side">
+
+        <a class="auth-back" href="index.html">← Back to home</a>
+
+        <div class="auth-card">
+
+            <h1>Welcome back</h1>
+
+            <p class="auth-sub">
+                Log in to open your signature verification dashboard.
+            </p>
+
+
+            <form onsubmit="loginUser(event)">
+
+
+                <!-- Email -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        class="form-control"
+                        placeholder="Enter your email"
+                        required>
+
+                </div>
+
+
+                <!-- Password -->
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="password"
+                            class="form-control"
+                            placeholder="Enter your password"
+                            required>
+
+                        <button
+                            type="button"
+                            class="show-password"
+                            onclick="togglePassword()">
+
+                            Show
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Remember + Forgot -->
+
+                <div class="login-options">
+
+                    <div>
+
+                        <input
+                            type="checkbox"
+                            id="remember">
+
+                        <label for="remember">
+                            Remember me
+                        </label>
+
+                    </div>
+
+
+                    <a href="#">
+                        Forgot password?
+                    </a>
+
+                </div>
+
+
+                <!-- LOGIN BUTTON -->
+
+                <button
+                    type="submit"
+                    class="btn btn-solid btn-block">
+
+                    Log in
+
+                </button>
+
+
+            </form>
+
+
+            <div class="auth-switch">
+
+                Don't have an account?
+
+                <a href="register.html">
+                    Create an account
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ================= LOGIN SCRIPT ================= -->
+
+<script>
+
+function loginUser(event) {
+
+    event.preventDefault();
+
+
+    // Get entered details
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+
+    // Get registered user
+
+    const savedUser =
+        localStorage.getItem("registeredUser");
+
+
+    // If no account exists
+
+    if (!savedUser) {
+
+        alert(
+            "No account found. Please create an account first."
+        );
+
+        return;
+    }
+
+
+    // Convert saved data into object
+
+    const user =
+        JSON.parse(savedUser);
+
+
+    // Check email and password
+
+    if (
+        email === user.email &&
+        password === user.password
+    ) {
+
+        // Save login status
+
+        localStorage.setItem(
+            "isLoggedIn",
+            "true"
+        );
+
+
+        // Save current user
+
+        localStorage.setItem(
+            "currentUser",
+            JSON.stringify(user)
+        );
+
+
+        alert(
+            "Login successful!"
+        );
+
+
+        // Open dashboard
+
+        window.location.href =
+            "dashboard.html";
+
+    }
+
+    else {
+
+        alert(
+            "Invalid email or password!"
+        );
+
+    }
+
+}
+
+
+function togglePassword() {
+
+    const password =
+        document.getElementById("password");
+
+    const button =
+        document.querySelector(".show-password");
+
+
+    if (password.type === "password") {
+
+        password.type = "text";
+
+        button.textContent = "Hide";
+
+    }
+
+    else {
+
+        password.type = "password";
+
+        button.textContent = "Show";
+
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>

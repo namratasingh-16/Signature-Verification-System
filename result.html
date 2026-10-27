@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Verification Result - SignVerify</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- TOP BAR -->
+
+    <header class="topbar">
+
+        <div class="topbar-in">
+
+            <a class="topbar-brand" href="dashboard.html">✍️ SignVerify</a>
+
+            <nav class="top-links">
+
+                <a href="dashboard.html">Dashboard</a>
+
+                <a href="login.html"
+                   class="top-logout"
+                   onclick="logoutUser(event)">Logout</a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <!-- RESULT -->
+
+    <main class="page">
+
+        <div class="result-card" id="result-card">
+
+
+            <!-- ===== Shown when a result exists ===== -->
+
+            <div class="verdict only-result">
+
+                <div class="verdict-stamp" id="verdict-stamp">Checking...</div>
+
+                <h1 id="result-title">Checking...</h1>
+
+                <p class="result-description" id="result-description">
+                    Please wait while the verification result is displayed.
+                </p>
+
+            </div>
+
+
+            <div class="result-body only-result">
+
+                <div class="gauge">
+
+                    <svg viewBox="0 0 160 160" aria-hidden="true">
+                        <circle class="gauge-track" cx="80" cy="80" r="70"></circle>
+                        <circle class="gauge-fill" id="gauge-fill" cx="80" cy="80" r="70"></circle>
+                    </svg>
+
+                    <div class="gauge-center">
+                        <strong id="similarity-score">--%</strong>
+                        <span>similarity</span>
+                    </div>
+
+                </div>
+
+
+                <div class="facts">
+
+                    <div class="detail-item">
+                        <span class="detail-title">Status</span>
+                        <strong class="detail-success" id="result-status">Checking...</strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span class="detail-title">AI confidence</span>
+                        <span>
+                            <span class="mini-bar"><i id="confidence-bar"></i></span>
+                            <strong id="confidence-score">--%</strong>
+                        </span>
+                    </div>
+
+                    <div class="detail-item">
+                        <span class="detail-title">Genuine samples compared</span>
+                        <strong id="samples-compared">--</strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span class="detail-title">Method</span>
+                        <strong>AI signature analysis (OpenCV)</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="samples only-result">
+
+                <h2>Score for each genuine sample</h2>
+
+                <div id="sampleScores">
+                    <p class="no-samples">Loading sample comparison...</p>
+                </div>
+
+                <div class="best-score" id="bestScoreBox">
+                    Best matching sample: --
+                </div>
+
+            </div>
+
+
+            <div class="result-actions only-result">
+
+                <a href="verify.html" class="btn btn-line">← Verify another</a>
+
+                <a href="dashboard.html" class="btn btn-solid">Go to dashboard</a>
+
+            </div>
+
+
+            <!-- ===== Shown when there is no result ===== -->
+
+            <div class="empty-state">
+
+                <h1>No result found</h1>
+
+                <p id="empty-message">
+                    Verify a signature first and the result will show up here.
+                </p>
+
+                <a href="verify.html" class="btn btn-solid">Verify a signature</a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="site-footer">
+        © 2026 SignVerify - AI-Based Signature Verification System
+    </footer>
+
+
+    <!-- RESULT JAVASCRIPT -->
+
+    <script>
+
+        function logoutUser(event) {
+
+            if (event) event.preventDefault();
+
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("currentUser");
+            localStorage.removeItem("verificationResult");
+
+            window.location.href = "login.html";
+
+        }
+
+
+        function setText(id, value) {
+            document.getElementById(id).textContent = value;
+        }
+
+
+        function showEmpty(message) {
+
+            document.getElementById("result-card").classList.add("is-empty");
+
+            setText("empty-message", message);
+
+        }
+
+
+        function showResult() {
+
+            const card = document.getElementById("result-card");
+
+            const reduceMotion =
+                window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+            const resultData = localStorage.getItem("verificationResult");
+
+            if (!resultData) {
+                showEmpty("No verification data was found in this browser. Verify a signature first.");
+                return;
+            }
+
+            let data;
+
+            try {
+                data = JSON.parse(resultData);
+            } catch (error) {
+                showEmpty("Saved verification data is corrupted. Please verify again.");
+                return;
+            }
+
+            /* Normalize result text (genuine / GENUINE / forged / forgery) */
+
+            const rawResult = String(data.result || "").trim().toLowerCase();
+
+            let result = null;
+
+            if (rawResult === "genuine") {
+                result = "Genuine";
+            } else if (rawResult === "forged" || rawResult === "forgery") {
+                result = "Forged";
+            }
+
+            if (!result) {
+                showEmpty("Unexpected result received: " + data.result);
+                return;
+            }
+
+            const isGenuine = result === "Genuine";
+
+            const similarity = Math.max(
+                0,
+                Math.min(100, Number(Number(data.similarity || 0).toFixed(1)))
+            );
+
+            const allScores = (Array.isArray(data.allScores) ? data.allScores : [])
+                .map(function (score) { return Number(score) || 0; });
+
+            const samplesCompared = data.samplesCompared || allScores.length;
+
+
+            /* Verdict */
+
+            if (!isGenuine) {
+                card.classList.add("is-forged");
+                document.getElementById("result-status")
+                    .classList.replace("detail-success", "detail-danger");
+            }
+
+            setText("verdict-stamp", result);
+            setText("result-title", result + " signature");
+            setText("result-status", (isGenuine ? "✓ " : "✗ ") + result);
+
+            setText(
+                "result-description",
+                isGenuine
+                    ? "The submitted signature closely matches the registered genuine signature samples."
+                    : "The submitted signature does not sufficiently match the registered genuine signature samples."
+            );
+
+
+            /* Samples compared */
+
+            setText("samples-compared", samplesCompared);
+
+
+            /* Confidence (same value as similarity) */
+
+            const confidence = similarity;
+
+            setText("confidence-score", confidence + "%");
+
+
+            /* Gauge + count up */
+
+            const gauge = document.getElementById("gauge-fill");
+            const confidenceBar = document.getElementById("confidence-bar");
+            const scoreEl = document.getElementById("similarity-score");
+
+            const targetOffset = 440 - (440 * similarity / 100);
+
+            if (reduceMotion) {
+
+                gauge.style.strokeDashoffset = targetOffset;
+                confidenceBar.style.width = confidence + "%";
+                scoreEl.textContent = similarity + "%";
+
+            } else {
+
+                setTimeout(function () {
+                    gauge.style.strokeDashoffset = targetOffset;
+                    confidenceBar.style.width = confidence + "%";
+                }, 150);
+
+                const duration = 1300;
+                let start = null;
+
+                function tick(now) {
+
+                    if (start === null) start = now;
+
+                    const t = Math.min((now - start) / duration, 1);
+                    const eased = 1 - Math.pow(1 - t, 3);
+
+                    scoreEl.textContent =
+                        (similarity * eased).toFixed(1).replace(/\.0$/, "") + "%";
+
+                    if (t < 1) requestAnimationFrame(tick);
+                    else scoreEl.textContent = similarity + "%";
+
+                }
+
+                requestAnimationFrame(tick);
+
+            }
+
+
+            /* Individual sample scores */
+
+            const sampleContainer = document.getElementById("sampleScores");
+            sampleContainer.innerHTML = "";
+
+            if (allScores.length > 0) {
+
+                const bestScore = Math.max.apply(null, allScores);
+                const bestIndex = allScores.indexOf(bestScore);
+
+                allScores.forEach(function (score, index) {
+
+                    const row = document.createElement("div");
+                    row.className = "sample-row" + (index === bestIndex ? " best" : "");
+
+                    const name = document.createElement("span");
+                    name.className = "sample-name";
+                    name.textContent = "Genuine sample " + (index + 1);
+
+                    const bar = document.createElement("div");
+                    bar.className = "sample-bar";
+
+                    const fill = document.createElement("i");
+                    bar.appendChild(fill);
+
+                    const value = document.createElement("span");
+                    value.className = "sample-score";
+                    value.textContent = score.toFixed(2) + "%";
+
+                    row.appendChild(name);
+                    row.appendChild(bar);
+                    row.appendChild(value);
+
+                    sampleContainer.appendChild(row);
+
+                    const width = Math.max(0, Math.min(100, score)) + "%";
+
+                    if (reduceMotion) {
+                        fill.style.width = width;
+                    } else {
+                        setTimeout(function () {
+                            fill.style.width = width;
+                        }, 250 + index * 120);
+                    }
+
+                });
+
+                setText(
+                    "bestScoreBox",
+                    "Best matching sample: Genuine sample " +
+                    (bestIndex + 1) + " — " + bestScore.toFixed(2) + "%"
+                );
+
+            } else {
+
+                const note = document.createElement("p");
+                note.className = "no-samples";
+                note.textContent = "No individual sample scores available.";
+                sampleContainer.appendChild(note);
+
+                setText("bestScoreBox", "Best matching sample: --");
+
+            }
+
+        }
+
+        showResult();
+
+    </script>
+
+
+</body>
+
+</html>
